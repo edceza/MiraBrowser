@@ -28,20 +28,26 @@ object BrowserTab: TBrowserTab
     OnDownloadUpdated = Chromium1DownloadUpdated
     OnBeforePopup = Chromium1BeforePopup
     OnBeforeBrowse = Chromium1BeforeBrowse
+    Options.Javascript = STATE_ENABLED
+    Options.Java = STATE_ENABLED
+    Options.Plugins = STATE_ENABLED
+    Options.ImageLoading = STATE_ENABLED
+    Options.TabToLinks = STATE_ENABLED
+    Options.ApplicationCache = STATE_ENABLED
+    Options.AcceleratedCompositing = STATE_ENABLED
   end
   object ToolBar2: TToolBar
     Left = 0
     Top = 0
     Width = 1134
     Height = 29
-    ButtonHeight = 21
     Caption = 'ToolBar2'
     TabOrder = 1
     object btnBack: TButton
       Left = 0
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actGoBack
       TabOrder = 4
     end
@@ -49,7 +55,7 @@ object BrowserTab: TBrowserTab
       Left = 22
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actGoForward
       TabOrder = 5
     end
@@ -57,7 +63,7 @@ object BrowserTab: TBrowserTab
       Left = 44
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actRefresh
       TabOrder = 6
     end
@@ -65,14 +71,15 @@ object BrowserTab: TBrowserTab
       Left = 66
       Top = 2
       Width = 532
-      Height = 21
+      Height = 22
       TabOrder = 0
+      OnKeyPress = addressBarKeyPress
     end
     object btnGo: TButton
       Left = 598
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actGo
       TabOrder = 1
     end
@@ -80,7 +87,7 @@ object BrowserTab: TBrowserTab
       Left = 620
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actNewTab
       TabOrder = 2
     end
@@ -88,7 +95,7 @@ object BrowserTab: TBrowserTab
       Left = 642
       Top = 2
       Width = 22
-      Height = 21
+      Height = 22
       Action = MainForm.actCloseTab
       TabOrder = 3
     end

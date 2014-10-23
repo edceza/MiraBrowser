@@ -42,6 +42,7 @@ type
       const callback: ICefBeforeDownloadCallback);
     procedure Chromium1LoadStart(Sender: TObject;
       const browser: ICefBrowser; const frame: ICefFrame);
+    procedure addressBarKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -147,6 +148,15 @@ procedure TBrowserTab.Chromium1LoadStart(Sender: TObject;
   const browser: ICefBrowser; const frame: ICefFrame);
 begin
   addressBar.Text := browser.MainFrame.GetUrl;
+end;
+
+procedure TBrowserTab.addressBarKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    MF.actGo.Execute;
+    exit;  
+  end;  
 end;
 
 end.
