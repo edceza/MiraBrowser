@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, cefvcl, ActnList, Buttons;
+  Dialogs, ComCtrls, cefvcl, ActnList, Buttons, ExtCtrls;
 
 type
   TMainForm = class(TForm)
@@ -31,6 +31,13 @@ type
     procedure actGoExecute(Sender: TObject);
     procedure actCloseTabExecute(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
+    procedure pagesMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure pagesMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure pagesDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure pagesDragDrop(Sender, Source: TObject; X, Y: Integer);
   private
 
     procedure setActivePage(ts: TTabSheet);
@@ -77,32 +84,32 @@ end;
 procedure TMainForm.openUrlInNewTab(url: string);
 var
 sh: TTabSheet;
-f: TBrowserTab;
+frmBT: TBrowserTab;
 begin
   sh := TTabSheet.Create(pages);
   sh.PageControl := pages;
-  f := TBrowserTab.Create(sh);
-  f.Parent := sh;
+  frmBT := TBrowserTab.Create(sh);
+  frmBT.Parent := sh;
   sh.Parent := pages;
-  f.BorderStyle := bsNone;
-  f.Align := alClient;
-  f.Show;
-  pages.ActivePage := sh;
-  f.Chromium1.Load(url);
+  frmBT.BorderStyle := bsNone;
+  frmBT.Align := alClient;
+  frmBT.Show;
+  frmBT.Chromium1.Load(url);
 end;
+
 procedure TMainForm.openNewTab;
 var
 sh: TTabSheet;
-f: TBrowserTab;
+frmBT: TBrowserTab;
 begin
   sh := TTabSheet.Create(pages);
   sh.PageControl := pages;
-  f := TBrowserTab.Create(sh);
-  f.Parent := sh;
+  frmBT := TBrowserTab.Create(sh);
+  frmBT.Parent := sh;
   sh.Parent := pages;
-  f.BorderStyle := bsNone;
-  f.Align := alClient;
-  f.Show;
+  frmBT.BorderStyle := bsNone;
+  frmBT.Align := alClient;
+  frmBT.Show;
   activePage := sh;
 end;
 
@@ -147,12 +154,54 @@ begin
     close;
   end;
   activePage := pages.Pages[i+j];
-  pages.pages[i].Destroy;
+  pages.pages[i].Free;
 end;
 
 procedure TMainForm.actRefreshExecute(Sender: TObject);
 begin
   getActiveBrowser().Browser.Reload;
+end;
+
+procedure TMainForm.pagesMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if button = mbMiddle then
+  begin
+    actCloseTab.Execute;
+  end;
+end;
+
+procedure TMainForm.pagesMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  pages.BeginDrag(False);
+end;
+
+procedure TMainForm.pagesDragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+begin
+  if (Sender is TPageControl) then Accept := True;
+end;
+
+procedure TMainForm.pagesDragDrop(Sender, Source: TObject; X, Y: Integer);
+const
+   TCM_GETITEMRECT = $130A;
+var
+   TabRect: TRect;
+   j: Integer;
+begin
+   if (Sender is TPageControl) then
+   for j := 0 to pages.PageCount - 1 do
+   begin
+     pages.Perform(TCM_GETITEMRECT, j, LParam(@TabRect)) ;
+     if PtInRect(TabRect, Point(X, Y)) then
+     begin
+       if pages.ActivePage.PageIndex <> j then
+         pages.ActivePage.PageIndex := j;
+       Exit;
+     end;
+   end;
+
 end;
 
 end.

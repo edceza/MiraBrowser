@@ -108,12 +108,20 @@ end;
 
 procedure TBrowserTab.Chromium1TitleChange(Sender: TObject;
   const browser: ICefBrowser; const title: ustring);
+var
+  t: string;
 begin
-   (Parent as TTabSheet).Caption := title;
-   if title <> '' then
-   begin
-     MF.Caption := title + ' - ' + 'MiraBrowser';
-   end;
+  t := title;
+  if Length(title) > 15 then
+  begin
+    t := Copy(title, 0, 12);
+    t := t + '...';
+  end;
+  (Parent as TTabSheet).Caption := t;
+  if title <> '' then
+  begin
+    MF.Caption := title + ' - ' + 'MiraBrowser';
+  end;
 end;
 
 procedure TBrowserTab.Chromium1DownloadUpdated(Sender: TObject;

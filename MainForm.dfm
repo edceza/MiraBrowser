@@ -29,6 +29,10 @@ object MainForm: TMainForm
     Height = 629
     Align = alClient
     TabOrder = 0
+    OnDragDrop = pagesDragDrop
+    OnDragOver = pagesDragOver
+    OnMouseDown = pagesMouseDown
+    OnMouseUp = pagesMouseUp
   end
   object actnLst: TActionList
     Left = 739
