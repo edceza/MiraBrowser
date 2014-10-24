@@ -28,13 +28,6 @@ object BrowserTab: TBrowserTab
     OnDownloadUpdated = Chromium1DownloadUpdated
     OnBeforePopup = Chromium1BeforePopup
     OnBeforeBrowse = Chromium1BeforeBrowse
-    Options.Javascript = STATE_ENABLED
-    Options.Java = STATE_ENABLED
-    Options.Plugins = STATE_ENABLED
-    Options.ImageLoading = STATE_ENABLED
-    Options.TabToLinks = STATE_ENABLED
-    Options.ApplicationCache = STATE_ENABLED
-    Options.AcceleratedCompositing = STATE_ENABLED
   end
   object ToolBar2: TToolBar
     Left = 0

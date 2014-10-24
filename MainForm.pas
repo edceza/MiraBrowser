@@ -174,7 +174,10 @@ end;
 procedure TMainForm.pagesMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  pages.BeginDrag(False);
+  if Button = mbLeft then
+  begin
+    pages.BeginDrag(False);
+  end;
 end;
 
 procedure TMainForm.pagesDragOver(Sender, Source: TObject; X, Y: Integer;
